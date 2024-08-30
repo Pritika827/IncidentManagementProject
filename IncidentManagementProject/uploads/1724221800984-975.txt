@@ -1,0 +1,70 @@
+DESKTOP-48C74RO\SQLEXPRESS
+localhost
+127.0.0.1
+192.168.10.128
+http://192.168.10.128:8080/BioAs_MT_VER3.1/adhar/api/operators/UPSIL0176021
+
+phone,email,cust,dist,pf,esi
+
+
+Using @JsonDeserialize in a Java class allows you to customize how JSON data is deserialized into Java objects,
+particularly when using the Jackson library. 
+This can be especially useful when you need to convert JSON data
+to a specific format or when dealing with custom date formats.
+
+
+PUT
+http://192.168.10.128:8080/BioAs_MT_VER3.1/adhar/api/operators/UPSIL0176021
+
+{
+    "operator_name": "Mukul Sharma",
+    "operator_type": "SUP",
+    "cert_no": "123908745",
+    "cert_issue_dt": "2002-07-09 00:00:00.0" ,
+    "dob": "1999-01-01 00:00:00.0",
+    "phone_no": "9125808041",
+    "email": "vermaheeresh@gmail.com",
+    "adhar_no": "949230416270",
+    "qualification":"GRADUATION",
+    "dist_cd":"FA001",
+    "cust_cd":"ACHIEVO",
+    "operator_id":"UPSIL0176021"
+}
+NEW
+
+{
+    "operator_name": "Mukul Sharma",
+    "operator_type": "SUP",
+    "cert_no": "123908745",
+    "cert_issue_dt": "2002-07-09 ",
+    "dob": "1990-01-01",
+    "phone_no": "9125808041",
+    "email": "vermaheeresh@gmail.com",
+    "adhar_no": "949230416270",
+    "qualification":"GRADUATION",
+    "dist_cd":"FA001",
+    "cust_cd":"ACHIEVO",
+    "operator_id":"UPSIL0176021",
+    "pf_no":"55AS4567788987h7878761",
+    "esi_no":"34445688908767892",
+    "remarks":"INSERTED BY SH001A"
+}
+
+
+
+
+Put
+http://192.168.10.128:8080/BioAs_MT_VER3.1/adhar/api/operators/UPSIL0176021/common
+{
+    "phone_no": "9125808041",
+    "email": "vermaheeresh@gmail.com",
+    "cust_cd":"ACHIEVO",
+    "dist_cd":"FA001",
+    "pf_no":"554567788",
+    "esi_no":"34445688",
+    "operator_id":"UPSIL0176021"
+}
+
+
+post
+http://localhost:8080/BioAs_MT_VER3.1/adhar/api/operators/bulk-credential
