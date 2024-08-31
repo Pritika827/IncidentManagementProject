@@ -10,6 +10,8 @@ public interface ReasonService {
 
 	ReasonDto getReasonById(Integer id);
 
+	ReasonDto getReasonByIncidentId(String incidentId);
+	
 	List<ReasonDto> getAllReasons();
 
 	ReasonDto updateReason(ReasonDto reasonDto, Integer id);

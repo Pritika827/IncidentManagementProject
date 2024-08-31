@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.transline.dtos.ReasonDto;
 import com.transline.dtos.WitnessAndOtherDto;
 import com.transline.services.WitnessAndOtherService;
 import com.transline.utils.ApiResponse;
@@ -50,6 +51,12 @@ public class WitnessAndOtherController {
 		return ResponseEntity.ok(witnessAndOtherDto);
 	}
 
+	@GetMapping("/incident/{incidentId}")
+	public ResponseEntity<WitnessAndOtherDto> getWitnessByIncidentId(@PathVariable String incidentId) {
+		WitnessAndOtherDto witnessAndOtherDto = witnessService.getWitnessByIncidentId(incidentId);
+		return ResponseEntity.ok(witnessAndOtherDto);
+	}
+
 	@PutMapping("/{id}/{incidentId}")
 	public ResponseEntity<WitnessAndOtherDto> updateWitnessAndOther(@PathVariable Integer id,
 			@RequestBody WitnessAndOtherDto witnessAndOtherDto, @PathVariable String incidentId) {
@@ -78,3 +85,23 @@ public class WitnessAndOtherController {
 		return ResponseEntity.ok(witnessesAndOthers);
 	}
 }
+
+/*
+{
+"incidentId": "DTC202400005",
+"name": "Emily White",
+"address": "654 Maple St, Riverside",
+"isInBus": false,
+"seatDirection": null,
+"seenIncident": false,
+"busSpeed": 45,
+"isHorned": false,
+"isBeaked": true,
+"tryToStopIncident": false,
+"culprit": "Unknown driver",
+"description": "The bus was sideswiped by a speeding car, which then fled the scene.",
+"date": "2024-08-26",
+"time": "19:00:00",
+"witnessType": "W"
+}
+*/

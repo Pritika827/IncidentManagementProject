@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.transline.dtos.InspectionReportDto;
+import com.transline.dtos.InsuranceDto;
 import com.transline.entities.FurtherRemarks;
 import com.transline.entities.Incidents;
 import com.transline.entities.InspectionReport;
+import com.transline.entities.Insurance;
 import com.transline.exceptions.ResourceNotFoundException;
 import com.transline.repositories.IncidentRepository;
 import com.transline.repositories.InspectionReportRepository;
@@ -21,7 +23,7 @@ public class InspectionReportServiceImpl implements InspectionReportService {
 
 	@Autowired
 	private InspectionReportRepository inspectionReportRepository;
-	
+
 	@Autowired
 	private IncidentRepository incidentRepository;
 
@@ -30,9 +32,9 @@ public class InspectionReportServiceImpl implements InspectionReportService {
 	private ModelMapper modelMapper;
 
 	private InspectionReport dtoToInspectionReport(InspectionReportDto reportDto) {
-		InspectionReport report=this.modelMapper.map(reportDto, InspectionReport.class);
+		InspectionReport report = this.modelMapper.map(reportDto, InspectionReport.class);
 		return report;
-	
+
 //	    InspectionReport report = new InspectionReport();
 //	    report.setId(reportDto.getId());
 //	     
@@ -113,22 +115,20 @@ public class InspectionReportServiceImpl implements InspectionReportService {
 		return this.inspectionReportToDto(inspectionReport);
 	}
 
-
 	@Override
-	public InspectionReportDto updateInspectionReportDto(InspectionReportDto inspectionReportDto,
-			Integer id) {
+	public InspectionReportDto updateInspectionReportDto(InspectionReportDto inspectionReportDto, Integer id) {
 		InspectionReport inspectionReport = this.inspectionReportRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("inspection report", "id", +id));
-		
+
 //		 Incidents incidents = incidentRepository.findById(inspectionReportDto.getIncidentId())
 //		            .orElseThrow(() -> new ResourceNotFoundException("Incident", "id", inspectionReportDto.getIncidentId()));
 //		   System.out.print("service"+id); 
-		
+
 		Incidents associatedIncident = inspectionReport.getIncident();
 		if (!associatedIncident.getIncidentId().equals(inspectionReportDto.getIncidentId())) {
 			throw new IllegalArgumentException("Provided incidentId does not match the existing record.");
 		}
-		
+
 		inspectionReport.setId(inspectionReportDto.getId());
 		inspectionReport.setAccidentDescription(inspectionReportDto.getAccidentDescription());
 		inspectionReport.setBusPartDamaged(inspectionReportDto.getBusPartDamaged());
@@ -152,7 +152,7 @@ public class InspectionReportServiceImpl implements InspectionReportService {
 		inspectionReport.setTimeToIncidentReport(inspectionReportDto.getTimeToIncidentReport());
 		inspectionReport.setWorkShopDateTime(inspectionReportDto.getWorkShopDateTime());
 		inspectionReport.setIncident(associatedIncident);
-		
+
 		InspectionReport updatedInspectionReport = this.inspectionReportRepository.save(inspectionReport);
 		InspectionReportDto inspectionReportDto2 = this.inspectionReportToDto(updatedInspectionReport);
 		return inspectionReportDto2;
@@ -163,6 +163,15 @@ public class InspectionReportServiceImpl implements InspectionReportService {
 		InspectionReport inspectionReport = this.inspectionReportRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("inspection report", "id", "id"));
 		this.inspectionReportRepository.delete(inspectionReport);
+	}
+
+	@Override
+	public InspectionReportDto getInspectionByIncidentId(String incidentId) {
+		InspectionReport inspectionReport = inspectionReportRepository.findByIncidentId(incidentId);
+		if (inspectionReport == null) {
+			throw new ResourceNotFoundException("Inspection Report", "incident id", incidentId);
+		}
+		return this.inspectionReportToDto(inspectionReport);
 	}
 
 }

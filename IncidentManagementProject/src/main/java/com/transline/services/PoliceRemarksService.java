@@ -3,6 +3,7 @@ package com.transline.services;
 import java.util.List;
 
 import com.transline.dtos.PoliceRemarksDto;
+import com.transline.dtos.WitnessAndOtherDto;
 
 public interface PoliceRemarksService {
 
@@ -15,5 +16,7 @@ public interface PoliceRemarksService {
 	void deletePoliceRemarks(Integer id);
 
 	PoliceRemarksDto updatePoliceRemarks(Integer id, PoliceRemarksDto policeRemarksDto);
+	
+	PoliceRemarksDto getPolicaRemarkByIncidentId(String incidentId);
 
 }

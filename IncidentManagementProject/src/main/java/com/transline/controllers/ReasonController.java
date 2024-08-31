@@ -48,6 +48,13 @@ public class ReasonController {
 		List<ReasonDto> reasonDtos = reasonService.getAllReasons();
 		return ResponseEntity.ok(reasonDtos);
 	}
+	
+	@GetMapping("/incident/{incidentId}")
+    public ResponseEntity<ReasonDto> getReasonByIncidentId(@PathVariable String incidentId) {
+        // Call the service method to fetch the reason by incidentId
+        ReasonDto reasonDto = reasonService.getReasonByIncidentId(incidentId);
+        return ResponseEntity.ok(reasonDto);
+    }
 
 	@PutMapping("/{id}/{incidentId}")
 	public ResponseEntity<ReasonDto> updatePoliceReason(@PathVariable Integer id, @RequestBody ReasonDto reasonDto,
@@ -65,3 +72,33 @@ public class ReasonController {
 	}
 
 }
+/*{
+ "incidentId":"DTC202400008",
+  "busDirection": "North",
+  "otherVehicleDirection": "East",
+  "busSpeed": 50,
+  "otherVehicleSpeed": 40,
+  "isHorned": true,
+  "isBeaked": false,
+  "atmosphericDesc": "Clear",
+  "roadCondition": "Dry",
+  "roadWidth": "Wide",
+  "busLight": {
+    "headLight": true,
+    "tailLight": false,
+    "interiorLight": true,
+    "brakeLight": true
+  },
+  "vehicleLightDesc1": "Front lights OK",
+  "vehicleLightDesc2": "Rear lights faulty",
+  "roadLightCondition": "Well-lit",
+  "isVehicleInLane": true,
+  "vehicleLaneDesc": "In lane",
+  "busStopDistance": "200 meters",
+  "trafficSignalDistance": "50 meters",
+  "busSpeedAccordingGPS": 48,
+  "analysisOfAccident": "ALIGHTING_PASSENGER",
+  "accidentCausedByVehicle": "DTC",
+  "accidentCausedByPassenger": "REAR_GATE"
+}
+*/

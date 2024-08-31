@@ -28,7 +28,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/api/incidents")
-@CrossOrigin(origins = "*",allowedHeaders = "*",allowCredentials = "false")
+@CrossOrigin(origins = "http://localhost:5173",allowedHeaders = "*",allowCredentials = "true")
 @Tag(name = "Incidents Management", description = "Operations related to incidents management")
 public class IncidentController {
 
@@ -78,6 +78,36 @@ public class IncidentController {
 		this.incidentServices.deteleIncidents(incidentId);
 		return new ResponseEntity<ApiResponse>(new ApiResponse("incident deleted successfully", true), HttpStatus.OK);
 	}
+	
+	
+/*{
+    "cmpCd": "TR00001" ,
+  "rscDairyNo": "RSC123456",
+  "informedBy": "John Doe",
+  "attendedBy": "Jane Smith",
+  "busId": "BUS123",
+  "accidentType": "MAJOR",  
+  "depotId": "DEP456",
+  "noOfPassenger": 25,
+  "driverId": "DR123",
+  "conductorId": "CN456",
+  "busDamage": true,
+  "date": "2024-08-28",
+  "time": "14:30:00",
+  "routeNo": "ROUTE789",
+  "dutyNo": "DUTY101",
+  "locationName": "Main Street",
+  "city": "Metropolis",
+  "pincode": "123456",
+  "zone": "NORTH", 
+  "areaType": "URBAN",
+  "region": "DELHI", 
+  "damagedDescription": "Front bumper damaged",
+  "injured": 2,
+  "death": 0
+}
+*/
+	
 	
 	//----------------------------------Inspection Report------------------------------------------------------
 //	@Autowired

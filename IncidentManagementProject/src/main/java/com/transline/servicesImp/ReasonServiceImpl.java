@@ -100,6 +100,15 @@ public class ReasonServiceImpl implements ReasonService {
 				.orElseThrow(() -> new ResourceNotFoundException("Reason", "id", +id));
 		return this.toDto(reason);
 	}
+	
+	@Override
+    public ReasonDto getReasonByIncidentId(String incidentId) {
+        Reason reason = reasonRepository.findByIncidentId(incidentId);
+        if (reason == null) {
+            throw new ResourceNotFoundException("Reason", "incidentId", incidentId);
+        }
+        return this.toDto(reason);
+    }
 
 	@Override
 	public List<ReasonDto> getAllReasons() {
@@ -219,5 +228,7 @@ public class ReasonServiceImpl implements ReasonService {
 				.orElseThrow(() -> new ResourceNotFoundException("Reason", "id", +id));
 		this.reasonRepository.delete(reason);
 	}
+
+	
 
 }

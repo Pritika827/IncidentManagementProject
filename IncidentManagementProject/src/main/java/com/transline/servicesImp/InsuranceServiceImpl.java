@@ -152,4 +152,13 @@ public class InsuranceServiceImpl implements InsuranceService {
 		return toDTO(updatedInsurance);
 	}
 
+	@Override
+	public InsuranceDto getInsuranceByIncidentId(String incidentId) {
+		Insurance insurance = insuranceRepository.findByIncidentId(incidentId);
+		if (insurance == null) {
+			throw new ResourceNotFoundException("Insurance", "incidnet id", incidentId);
+		}
+		return this.toDTO(insurance);
+	}
+
 }

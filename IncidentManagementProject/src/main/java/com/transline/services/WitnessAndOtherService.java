@@ -2,6 +2,7 @@ package com.transline.services;
 
 import java.util.List;
 
+import com.transline.dtos.ReasonDto;
 import com.transline.dtos.WitnessAndOtherDto;
 
 public interface WitnessAndOtherService {
@@ -19,4 +20,6 @@ public interface WitnessAndOtherService {
 	List<WitnessAndOtherDto> getAllWitnessesSortedByType();
 	
 	public List<WitnessAndOtherDto> getWitnessAndOthersByPrefix(String prefix);
+	
+	WitnessAndOtherDto getWitnessByIncidentId(String incidentId);
 }

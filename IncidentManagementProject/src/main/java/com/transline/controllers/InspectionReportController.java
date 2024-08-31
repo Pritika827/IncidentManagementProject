@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.transline.dtos.InspectionReportDto;
+import com.transline.dtos.InsuranceDto;
 import com.transline.entities.Incidents;
 import com.transline.servicesImp.InspectionReportServiceImpl;
 import com.transline.utils.ApiResponse;
@@ -25,7 +26,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/api/inspectionReport")
-@CrossOrigin(origins = "*",allowedHeaders = "*",allowCredentials = "false")
+@CrossOrigin(origins = "*", allowedHeaders = "*", allowCredentials = "false")
 @Tag(name = "Inspection Report Management", description = "Operations related to inspection report management")
 public class InspectionReportController {
 
@@ -50,14 +51,22 @@ public class InspectionReportController {
 		return ResponseEntity.ok(this.reportService.getAllInspectionReportDetails());
 	}
 
+	@GetMapping("/incident/{incidentId}")
+	public ResponseEntity<InspectionReportDto> getInspectionByIncidentId(@PathVariable String incidentId) {
+		InspectionReportDto inspectionReportDto = reportService.getInspectionByIncidentId(incidentId);
+		return ResponseEntity.ok(inspectionReportDto);
+	}
+
 	@PutMapping("/{id}/{incidentId}")
 	@Operation(summary = "Update inspection report", description = "Update an existing inspection report's details by their ID")
 	public ResponseEntity<InspectionReportDto> updateInspectionReport(
-			@RequestBody InspectionReportDto inspectionReportDto, @PathVariable Integer id,@PathVariable String incidentId) {
+			@RequestBody InspectionReportDto inspectionReportDto, @PathVariable Integer id,
+			@PathVariable String incidentId) {
 		inspectionReportDto.setId(id);
 		inspectionReportDto.setIncidentId(incidentId);
-		InspectionReportDto updatedInspectionReport = this.reportService.updateInspectionReportDto(inspectionReportDto, id);
-		  System.out.print("service"+id); 
+		InspectionReportDto updatedInspectionReport = this.reportService.updateInspectionReportDto(inspectionReportDto,
+				id);
+		System.out.print("service" + id);
 		return ResponseEntity.ok(updatedInspectionReport);
 	}
 
@@ -69,3 +78,29 @@ public class InspectionReportController {
 				HttpStatus.OK);
 	}
 }
+
+/*
+ {
+    "incidentId": "DTC202400009",    
+   "accidentDescription": "A bus collided with a delivery truck due to slippery road conditions.",
+  "isPresent": true,
+  "timeTakenToReach": "00:45:00",
+  "incidentReportedBy": "Emily Davis",
+  "timeToIncidentReport": "00:30:00",
+  "reasonOfAccident": "Slippery roads and reduced visibility.",
+  "isBeaked": true,
+  "roadLightCondition": "Poor",
+  "distanceToBusStop": 300.0,
+  "culprit": "Both drivers",
+  "busPartDamaged": "Front and side panels",
+  "remarks": "Both vehicles suffered substantial damage and were towed.",
+  "workShopDateTime": "2024-08-28T08:00:00",
+  "partsRepaired": "Front panel, side panels, engine",
+  "repairingCost": 7500.00,
+  "partCost": 4500.00,
+  "labourerCost": 2000.00,
+  "otherCost": 1000.00,
+  "jobCartNo": "JCN9101",
+  "repairingDate": "2024-08-28T17:00:00"
+  }*/
+

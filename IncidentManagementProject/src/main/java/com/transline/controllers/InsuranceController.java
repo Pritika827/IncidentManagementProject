@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.transline.dtos.InsuranceDto;
+import com.transline.dtos.PoliceRemarksDto;
 import com.transline.services.InsuranceService;
 import com.transline.servicesImp.PoliceRemarksServiceImpl;
 import com.transline.utils.ApiResponse;
@@ -47,6 +48,12 @@ public class InsuranceController {
 	public ResponseEntity<List<InsuranceDto>> getAllInsurance() {
 		List<InsuranceDto> insurances = insuranceService.getAllPoliceRemarks();
 		return ResponseEntity.ok(insurances);
+	}
+	
+	@GetMapping("/incident/{incidentId}")
+	public ResponseEntity<InsuranceDto> getInsuranceByIncidentId(@PathVariable String incidentId) {
+		InsuranceDto insuranceDto = insuranceService.getInsuranceByIncidentId(incidentId);
+		return ResponseEntity.ok(insuranceDto);
 	}
 
 	@PutMapping("{id}/{incidentId}")

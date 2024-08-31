@@ -3,6 +3,7 @@ package com.transline.services;
 import java.util.List;
 
 import com.transline.dtos.FurtherRemarksDto;
+import com.transline.dtos.InspectionReportDto;
 
 public interface FurtherRemarksService {
 
@@ -16,5 +17,7 @@ public interface FurtherRemarksService {
 
 	void deleteFurtherRemarks(Integer id);
 
-	List<FurtherRemarksDto> getAllFutherRemarksByIncidentId(String remarksRepository);
+//	List<FurtherRemarksDto> getAllFutherRemarksByIncidentId(String remarksRepository);
+	
+	FurtherRemarksDto getFutherRemarkByIncidentId(String incidentId);
 }

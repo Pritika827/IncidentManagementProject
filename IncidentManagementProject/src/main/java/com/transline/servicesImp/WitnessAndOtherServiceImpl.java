@@ -7,8 +7,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.transline.dtos.ReasonDto;
 import com.transline.dtos.WitnessAndOtherDto;
 import com.transline.entities.Incidents;
+import com.transline.entities.Reason;
 import com.transline.entities.WitnessAndOther;
 import com.transline.exceptions.ResourceNotFoundException;
 import com.transline.repositories.IncidentRepository;
@@ -188,20 +190,26 @@ public class WitnessAndOtherServiceImpl implements WitnessAndOtherService {
 				.sorted((w1, w2) -> w1.getWitnessType().compareTo(w2.getWitnessType())).collect(Collectors.toList());
 		return sortedWitnesses.stream().map(this::toDto).collect(Collectors.toList());
 	}
-	
-	
+
 	public List<WitnessAndOtherDto> getWitnessAndOthersByPrefix(String prefix) {
-        List<WitnessAndOther> witnessesAndOthers = witnessAndOtherRepository.findAll();
+		List<WitnessAndOther> witnessesAndOthers = witnessAndOtherRepository.findAll();
 
-        String witnessType = prefix.equals("W-") ? "W" : (prefix.equals("O-") ? "O" : null);
-        if (witnessType == null) {
-            throw new IllegalArgumentException("Invalid prefix. Use 'W-' for Witness or 'O-' for Original.");
-        }
+		String witnessType = prefix.equals("W-") ? "W" : (prefix.equals("O-") ? "O" : null);
+		if (witnessType == null) {
+			throw new IllegalArgumentException("Invalid prefix. Use 'W-' for Witness or 'O-' for Original.");
+		}
 
-        return witnessesAndOthers.stream()
-                .filter(w -> w.getWitnessType().equals(witnessType))
-                .map(this::toDto)
-                .collect(Collectors.toList());
-    }
+		return witnessesAndOthers.stream().filter(w -> w.getWitnessType().equals(witnessType)).map(this::toDto)
+				.collect(Collectors.toList());
+	}
+
+	@Override
+	public WitnessAndOtherDto getWitnessByIncidentId(String incidentId) {
+		WitnessAndOther witnessAndOther = witnessAndOtherRepository.findByIncidentId(incidentId);
+		if (witnessAndOther == null) {
+			throw new ResourceNotFoundException("Witness And Other", "incidentId", incidentId);
+		}
+		return this.toDto(witnessAndOther);
+	}
 
 }

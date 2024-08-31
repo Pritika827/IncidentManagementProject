@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.transline.dtos.PoliceRemarksDto;
+import com.transline.dtos.WitnessAndOtherDto;
 import com.transline.entities.Incidents;
 import com.transline.entities.PoliceRemarks;
 import com.transline.exceptions.ResourceNotFoundException;
@@ -35,7 +36,7 @@ public class PoliceRemarksController {
 
 	@Autowired
 	private PoliceRemarksService policeRemarksService;
-	
+
 //	@Autowired
 //	private IncidentRepository incidentRepository;
 //	
@@ -59,12 +60,16 @@ public class PoliceRemarksController {
 		return ResponseEntity.ok(policeRemarksList);
 	}
 
+	@GetMapping("/incident/{incidentId}")
+	public ResponseEntity<PoliceRemarksDto> getPoliceRemarkByIncidentId(@PathVariable String incidentId) {
+		PoliceRemarksDto policeRemarksDto = policeRemarksService.getPolicaRemarkByIncidentId(incidentId);
+		return ResponseEntity.ok(policeRemarksDto);
+	}
+
 	// http://localhost:8080/api/police-remarks/3/DTC2024000032
 	@PutMapping("/{id}/{incidentId}")
-	public ResponseEntity<PoliceRemarksDto> updatePoliceRemarks(
-	        @PathVariable Integer id,
-	        @PathVariable String incidentId,
-	        @RequestBody PoliceRemarksDto policeRemarksDto) {
+	public ResponseEntity<PoliceRemarksDto> updatePoliceRemarks(@PathVariable Integer id,
+			@PathVariable String incidentId, @RequestBody PoliceRemarksDto policeRemarksDto) {
 
 //	    Incidents incident = incidentRepository.findById(incidentId)
 //	            .orElseThrow(() -> new ResourceNotFoundException("Incident", "id", incidentId));
@@ -72,13 +77,12 @@ public class PoliceRemarksController {
 //	    PoliceRemarks remarks=remarksRepository.findById(incidentId)
 //	    		.orElseThrow(() -> new ResourceNotFoundException("Incident", "id", incidentId));
 
-	//    policeRemarksDTO.setIncidentId(incident.getIncidentId());
-	    policeRemarksDto.setId(id);
-	    policeRemarksDto.setIncidentId(incidentId);
-	    PoliceRemarksDto updatedPoliceRemarksDTO = this.policeRemarksService.updatePoliceRemarks(id, policeRemarksDto);
-	    return ResponseEntity.ok(updatedPoliceRemarksDTO);
+		// policeRemarksDTO.setIncidentId(incident.getIncidentId());
+		policeRemarksDto.setId(id);
+		policeRemarksDto.setIncidentId(incidentId);
+		PoliceRemarksDto updatedPoliceRemarksDTO = this.policeRemarksService.updatePoliceRemarks(id, policeRemarksDto);
+		return ResponseEntity.ok(updatedPoliceRemarksDTO);
 	}
-
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<ApiResponse> deletePoliceRemarks(@PathVariable Integer id) {
@@ -88,3 +92,24 @@ public class PoliceRemarksController {
 	}
 
 }
+
+/*
+ * {
+   "incidentId": "DTC202400010",
+    "name": "Officer Karen Brown",
+  "location": "Snowy Ridge Road",
+  "policeStationName": "Mountain Police Department",
+  "isIncidentSeen": true,
+  "description": "The bus skidded on ice and crashed into a guardrail.",
+  "investigationReport": {
+    "reportName": "Bus Accident Report",
+    "address": "789 Snowy Road",
+    "injuredDescription": "Several minor injuries reported.",
+    "remarks": "Weather conditions were a significant factor."
+  },
+  "drName": "Dr. Laura Adams",
+  "drAddress": "123 Health Ave",
+  "hospitalName": "Mountain View Hospital",
+  "referenceNo": "REF112233"
+}
+*/

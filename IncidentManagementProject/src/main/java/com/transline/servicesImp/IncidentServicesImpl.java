@@ -179,7 +179,7 @@ public class IncidentServicesImpl implements IncidentServices {
 	@Override
 	public IncidentsDto getIncidentById(String incidentId) {
 		Incidents incidents = this.incidentRepository.findById(incidentId)
-				.orElseThrow(() -> new ResourceNotFoundException("incident", "id", "incidentId"));
+				.orElseThrow(() -> new ResourceNotFoundException("incident", "id", incidentId));
 		return this.incidentToDto(incidents);
 	}
 

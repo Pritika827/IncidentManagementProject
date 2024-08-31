@@ -3,6 +3,7 @@ package com.transline.services;
 import java.util.List;
 
 import com.transline.dtos.InsuranceDto;
+import com.transline.dtos.PoliceRemarksDto;
 
 public interface InsuranceService {
 
@@ -18,4 +19,5 @@ public interface InsuranceService {
 
 	InsuranceDto updateInsurance(InsuranceDto insuranceDto, Integer id);
 
+	InsuranceDto getInsuranceByIncidentId(String incidentId);
 }

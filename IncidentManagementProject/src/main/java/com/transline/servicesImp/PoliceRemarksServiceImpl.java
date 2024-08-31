@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.transline.dtos.PoliceRemarksDto;
+import com.transline.dtos.WitnessAndOtherDto;
 import com.transline.entities.Incidents;
 import com.transline.entities.PoliceRemarks;
+import com.transline.entities.WitnessAndOther;
 import com.transline.exceptions.ResourceNotFoundException;
 import com.transline.repositories.IncidentRepository;
 import com.transline.repositories.PoliceRemarksRepository;
@@ -197,44 +199,52 @@ public class PoliceRemarksServiceImpl implements PoliceRemarksService {
 //		PoliceRemarksDTO policeRemarksDTO2 = this.toDTO(updatedPolicy);
 //		return policeRemarksDTO2;
 //	}
-	
-	
+
 	public PoliceRemarksDto updatePoliceRemarks(Integer id, PoliceRemarksDto policeRemarksDto) {
-        // Find the existing PoliceRemarks record
-        PoliceRemarks existingPoliceRemarks = policeRemarksRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("PoliceRemarks", "id", id));
+		// Find the existing PoliceRemarks record
+		PoliceRemarks existingPoliceRemarks = policeRemarksRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("PoliceRemarks", "id", id));
 
-        // Validate that the provided incidentId matches the existing Incident
-        Incidents existingIncident = existingPoliceRemarks.getIncident();
-        if (!existingIncident.getIncidentId().equals(policeRemarksDto.getIncidentId())) {
-            throw new IllegalArgumentException("Provided incidentId does not match the existing record.");
-        }
+		// Validate that the provided incidentId matches the existing Incident
+		Incidents existingIncident = existingPoliceRemarks.getIncident();
+		if (!existingIncident.getIncidentId().equals(policeRemarksDto.getIncidentId())) {
+			throw new IllegalArgumentException("Provided incidentId does not match the existing record.");
+		}
 
-        // Update the PoliceRemarks record with the new values
-        existingPoliceRemarks.setName(policeRemarksDto.getName());
-        existingPoliceRemarks.setLocation(policeRemarksDto.getLocation());
-        existingPoliceRemarks.setPoliceStationName(policeRemarksDto.getPoliceStationName());
-        existingPoliceRemarks.setIsIncidentSeen(policeRemarksDto.getIsIncidentSeen());
-        existingPoliceRemarks.setDescription(policeRemarksDto.getDescription());
+		// Update the PoliceRemarks record with the new values
+		existingPoliceRemarks.setName(policeRemarksDto.getName());
+		existingPoliceRemarks.setLocation(policeRemarksDto.getLocation());
+		existingPoliceRemarks.setPoliceStationName(policeRemarksDto.getPoliceStationName());
+		existingPoliceRemarks.setIsIncidentSeen(policeRemarksDto.getIsIncidentSeen());
+		existingPoliceRemarks.setDescription(policeRemarksDto.getDescription());
 
-        // Handle InvestigationReport
-        if (policeRemarksDto.getInvestigationReport() != null) {
-            PoliceRemarks.InvestigationReport report = new PoliceRemarks.InvestigationReport();
-            report.setReportName(policeRemarksDto.getInvestigationReport().getReportName());
-            report.setAddress(policeRemarksDto.getInvestigationReport().getAddress());
-            report.setInjuredDescription(policeRemarksDto.getInvestigationReport().getInjuredDescription());
-            report.setRemarks(policeRemarksDto.getInvestigationReport().getRemarks());
-            existingPoliceRemarks.setInvestigationReport(report);
-        }
+		// Handle InvestigationReport
+		if (policeRemarksDto.getInvestigationReport() != null) {
+			PoliceRemarks.InvestigationReport report = new PoliceRemarks.InvestigationReport();
+			report.setReportName(policeRemarksDto.getInvestigationReport().getReportName());
+			report.setAddress(policeRemarksDto.getInvestigationReport().getAddress());
+			report.setInjuredDescription(policeRemarksDto.getInvestigationReport().getInjuredDescription());
+			report.setRemarks(policeRemarksDto.getInvestigationReport().getRemarks());
+			existingPoliceRemarks.setInvestigationReport(report);
+		}
 
-        existingPoliceRemarks.setDrName(policeRemarksDto.getDrName());
-        existingPoliceRemarks.setDrAddress(policeRemarksDto.getDrAddress());
-        existingPoliceRemarks.setHospitalName(policeRemarksDto.getHospitalName());
-        existingPoliceRemarks.setReferenceNo(policeRemarksDto.getReferenceNo());
+		existingPoliceRemarks.setDrName(policeRemarksDto.getDrName());
+		existingPoliceRemarks.setDrAddress(policeRemarksDto.getDrAddress());
+		existingPoliceRemarks.setHospitalName(policeRemarksDto.getHospitalName());
+		existingPoliceRemarks.setReferenceNo(policeRemarksDto.getReferenceNo());
 
-        // Save and return the updated PoliceRemarks record
-        PoliceRemarks updatedPoliceRemarks = policeRemarksRepository.save(existingPoliceRemarks);
-        return toDTO(updatedPoliceRemarks);
-    }
+		// Save and return the updated PoliceRemarks record
+		PoliceRemarks updatedPoliceRemarks = policeRemarksRepository.save(existingPoliceRemarks);
+		return toDTO(updatedPoliceRemarks);
+	}
+
+	@Override
+	public PoliceRemarksDto getPolicaRemarkByIncidentId(String incidentId) {
+		PoliceRemarks policeRemarks = policeRemarksRepository.findByIncidentId(incidentId);
+		if (policeRemarks == null) {
+			throw new ResourceNotFoundException("Police remarks", "incident id", incidentId);
+		}
+		return this.toDTO(policeRemarks);
+	}
 
 }

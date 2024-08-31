@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import com.transline.security.JwtAuthenticationEntryPoint;
 import com.transline.security.JwtAuthenticationFilter;
@@ -38,7 +39,8 @@ public class SecurityConfig {
 
 		http.csrf(csrf -> csrf.disable()).authorizeRequests().requestMatchers("/auth/login").permitAll()
 		.requestMatchers("api/roles").permitAll()
-				.requestMatchers("/auth/create-user").permitAll().requestMatchers("/api/**").authenticated()
+				.requestMatchers("/api/user/**").permitAll()
+				.requestMatchers("/api/**").authenticated()
 			//	.requestMatchers(HttpMethod.GET).permitAll()
 				// .requestMatchers("/api/incidents").permitAll()
 				//.anyRequest().authenticated()
@@ -98,5 +100,13 @@ public class SecurityConfig {
 //	        }
 //	    };
 //	}
+	
+//	 public void addCorsMappings(CorsRegistry registry) {
+//	        registry.addMapping("/**")
+//	                .allowedOrigins("*")  // Allows all origins. Adjust as necessary for security.
+//	                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")  // Allows specific methods
+//	                .allowedHeaders("*")  // Allows all headers
+//	                .allowCredentials(true);  // If you need to send cookies or authentication information
+//	    }
 
 }

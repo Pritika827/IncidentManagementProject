@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.transline.dtos.FurtherRemarksDto;
+import com.transline.dtos.InspectionReportDto;
 import com.transline.entities.FurtherRemarks;
 import com.transline.entities.Incidents;
+import com.transline.entities.InspectionReport;
 import com.transline.exceptions.ResourceNotFoundException;
 import com.transline.repositories.FurtherRemarksRepository;
 import com.transline.services.FurtherRemarksService;
@@ -91,12 +93,19 @@ public class FurtherRemarksServiceImpl implements FurtherRemarksService {
 		this.remarksRepository.delete(remarks);
 	}
 
+//	@Override
+//	public List<FurtherRemarksDto> getAllFutherRemarksByIncidentId(String incidentId) {
+//		List<FurtherRemarks> furtherRemarksList = remarksRepository.findByIncidentIncidentId(incidentId);
+//		return furtherRemarksList.stream().map(this::FurtherRemarksToDto).collect(Collectors.toList());
+//	}
+
 	@Override
-	public List<FurtherRemarksDto> getAllFutherRemarksByIncidentId(String incidentId) {
-
-		List<FurtherRemarks> furtherRemarksList = remarksRepository.findByIncidentIncidentId(incidentId);
-		return furtherRemarksList.stream().map(this::FurtherRemarksToDto).collect(Collectors.toList());
-
+	public FurtherRemarksDto getFutherRemarkByIncidentId(String incidentId) {
+		FurtherRemarks furtherRemarks = remarksRepository.findByIncidentId(incidentId);
+		if (furtherRemarks == null) {
+			throw new ResourceNotFoundException("Further remarks", "incident id", incidentId);
+		}
+		return this.FurtherRemarksToDto(furtherRemarks);
 	}
 
 }

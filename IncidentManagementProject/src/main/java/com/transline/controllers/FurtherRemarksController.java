@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.transline.dtos.FurtherRemarksDto;
+import com.transline.dtos.InspectionReportDto;
 import com.transline.services.FurtherRemarksService;
 import com.transline.utils.ApiResponse;
 
@@ -66,9 +67,24 @@ public class FurtherRemarksController {
 		return new ResponseEntity<ApiResponse>(new ApiResponse("incident deleted successfully", true), HttpStatus.OK);
 	}
 
+//	@GetMapping("/incident/{incidentId}")
+//	public ResponseEntity<List<FurtherRemarksDto>> getFurtherRemarksByIncidentId(@PathVariable String incidentId) {
+//		List<FurtherRemarksDto> furtherRemarks = remarksService.getAllFutherRemarksByIncidentId(incidentId);
+//		return ResponseEntity.ok(furtherRemarks);
+//	}
+	
 	@GetMapping("/incident/{incidentId}")
-	public ResponseEntity<List<FurtherRemarksDto>> getFurtherRemarksByIncidentId(@PathVariable String incidentId) {
-		List<FurtherRemarksDto> furtherRemarks = remarksService.getAllFutherRemarksByIncidentId(incidentId);
-		return ResponseEntity.ok(furtherRemarks);
+	public ResponseEntity<FurtherRemarksDto> getFutherRemarkByIncidentId(@PathVariable String incidentId) {
+		FurtherRemarksDto furtherRemarksDto = remarksService.getFutherRemarkByIncidentId(incidentId);
+		return ResponseEntity.ok(furtherRemarksDto);
 	}
 }
+
+/*
+ {
+    "incidentId": "DTC202400009",
+ "reportedBy": "Ethan White",
+  "description": "A minor rear-end collision occurred at a stop sign. Both vehicles suffered slight damages.",
+  "date": "2024-08-31",
+  "time": "08:00:00"
+  }*/
